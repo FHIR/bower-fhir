@@ -58,7 +58,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	mkFhir = __webpack_require__(1);
 
-	merge = __webpack_require__(15);
+	merge = __webpack_require__(16);
 
 	utils = __webpack_require__(10);
 
@@ -141,7 +141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	resolve = __webpack_require__(11);
 
-	merge = __webpack_require__(15);
+	merge = __webpack_require__(16);
 
 	cache = {};
 
@@ -235,7 +235,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var doGet, getRel, queryBuider, search;
 
-	queryBuider = __webpack_require__(16);
+	queryBuider = __webpack_require__(15);
 
 	doGet = function(http, uri, success, error) {
 	  return http({
@@ -726,7 +726,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var RTRIM, absoluteUrl, addKey, argsArray, assertArray, assertObject, identity, merge, mergeLists, postwalk, reduceMap, relativeUrl, trim, type, walk,
 	  __slice = [].slice;
 
-	merge = __webpack_require__(15);
+	merge = __webpack_require__(16);
 
 	RTRIM = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
 
@@ -1023,7 +1023,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	btoa = __webpack_require__(17).btoa;
 
-	merge = __webpack_require__(15);
+	merge = __webpack_require__(16);
 
 	bearer = function(cfg) {
 	  return function(req) {
@@ -1078,7 +1078,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var keyFor, merge, withPatient, wrap;
 
-	merge = __webpack_require__(15);
+	merge = __webpack_require__(16);
 
 	keyFor = {
 	  "Observation": "subject",
@@ -1119,7 +1119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	resolve = __webpack_require__(11);
 
-	merge = __webpack_require__(15);
+	merge = __webpack_require__(16);
 
 	utils = __webpack_require__(10);
 
@@ -1172,93 +1172,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {/*!
-	 * @name JavaScript/NodeJS Merge v1.1.3
-	 * @author yeikos
-	 * @repository https://github.com/yeikos/js.merge
-
-	 * Copyright 2014 yeikos - MIT license
-	 * https://raw.github.com/yeikos/js.merge/master/LICENSE
-	 */
-
-	;(function(isNode) {
-
-		function merge() {
-
-			var items = Array.prototype.slice.call(arguments),
-				result = items.shift(),
-				deep = (result === true),
-				size = items.length,
-				item, index, key;
-
-			if (deep || typeOf(result) !== 'object')
-
-				result = {};
-
-			for (index=0;index<size;++index)
-
-				if (typeOf(item = items[index]) === 'object')
-
-					for (key in item)
-
-						result[key] = deep ? clone(item[key]) : item[key];
-
-			return result;
-
-		}
-
-		function clone(input) {
-
-			var output = input,
-				type = typeOf(input),
-				index, size;
-
-			if (type === 'array') {
-
-				output = [];
-				size = input.length;
-
-				for (index=0;index<size;++index)
-
-					output[index] = clone(input[index]);
-
-			} else if (type === 'object') {
-
-				output = {};
-
-				for (index in input)
-
-					output[index] = clone(input[index]);
-
-			}
-
-			return output;
-
-		}
-
-		function typeOf(input) {
-
-			return ({}).toString.call(input).match(/\s([\w]+)/)[1].toLowerCase();
-
-		}
-
-		if (isNode) {
-
-			module.exports = merge;
-
-		} else {
-
-			window.merge = merge;
-
-		}
-
-	})(typeof module === 'object' && module && typeof module.exports === 'object' && module.exports);
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)(module)))
-
-/***/ },
-/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var MODIFIERS, OPERATORS, assertArray, assertObject, buildSearchParams, expandParam, handleInclude, handleSort, identity, isOperator, linearizeOne, linearizeParams, reduceMap, type, utils;
@@ -1422,6 +1335,93 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.query = buildSearchParams;
 
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(module) {/*!
+	 * @name JavaScript/NodeJS Merge v1.1.3
+	 * @author yeikos
+	 * @repository https://github.com/yeikos/js.merge
+
+	 * Copyright 2014 yeikos - MIT license
+	 * https://raw.github.com/yeikos/js.merge/master/LICENSE
+	 */
+
+	;(function(isNode) {
+
+		function merge() {
+
+			var items = Array.prototype.slice.call(arguments),
+				result = items.shift(),
+				deep = (result === true),
+				size = items.length,
+				item, index, key;
+
+			if (deep || typeOf(result) !== 'object')
+
+				result = {};
+
+			for (index=0;index<size;++index)
+
+				if (typeOf(item = items[index]) === 'object')
+
+					for (key in item)
+
+						result[key] = deep ? clone(item[key]) : item[key];
+
+			return result;
+
+		}
+
+		function clone(input) {
+
+			var output = input,
+				type = typeOf(input),
+				index, size;
+
+			if (type === 'array') {
+
+				output = [];
+				size = input.length;
+
+				for (index=0;index<size;++index)
+
+					output[index] = clone(input[index]);
+
+			} else if (type === 'object') {
+
+				output = {};
+
+				for (index in input)
+
+					output[index] = clone(input[index]);
+
+			}
+
+			return output;
+
+		}
+
+		function typeOf(input) {
+
+			return ({}).toString.call(input).match(/\s([\w]+)/)[1].toLowerCase();
+
+		}
+
+		if (isNode) {
+
+			module.exports = merge;
+
+		} else {
+
+			window.merge = merge;
+
+		}
+
+	})(typeof module === 'object' && module && typeof module.exports === 'object' && module.exports);
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(18)(module)))
 
 /***/ },
 /* 17 */
