@@ -189,9 +189,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	search = (function(_this) {
-	  return function(_arg) {
+	  return function(arg) {
 	    var baseUrl, error, http, query, queryStr, success, type, uri;
-	    baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, query = _arg.query, success = _arg.success, error = _arg.error;
+	    baseUrl = arg.baseUrl, http = arg.http, type = arg.type, query = arg.query, success = arg.success, error = arg.error;
 	    queryStr = queryBuider.query(query);
 	    uri = baseUrl + "/" + type + "/_search?" + queryStr;
 	    return doGet(http, uri, success, error);
@@ -199,20 +199,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(this);
 
 	getRel = function(rel) {
-	  return function(_arg) {
+	  return function(arg) {
 	    var baseUrl, bundle, error, http, l, success, urls;
-	    baseUrl = _arg.baseUrl, http = _arg.http, bundle = _arg.bundle, success = _arg.success, error = _arg.error;
+	    baseUrl = arg.baseUrl, http = arg.http, bundle = arg.bundle, success = arg.success, error = arg.error;
 	    urls = (function() {
-	      var _i, _len, _ref, _results;
-	      _ref = bundle != null ? bundle.link : void 0;
-	      _results = [];
-	      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	        l = _ref[_i];
+	      var i, len, ref, results;
+	      ref = bundle != null ? bundle.link : void 0;
+	      results = [];
+	      for (i = 0, len = ref.length; i < len; i++) {
+	        l = ref[i];
 	        if (l.rel === rel) {
-	          _results.push(l.href);
+	          results.push(l.href);
 	        }
 	      }
-	      return _results;
+	      return results;
 	    })();
 	    if (urls.length !== 1) {
 	      return error("No " + rel + " link found in bundle");
@@ -235,9 +235,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var conformance, profile;
 
-	conformance = function(_arg) {
+	conformance = function(arg) {
 	  var baseUrl, error, http, success;
-	  baseUrl = _arg.baseUrl, http = _arg.http, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/metadata",
@@ -247,9 +247,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	profile = (function(_this) {
-	  return function(_arg) {
+	  return function(arg) {
 	    var baseUrl, error, http, success, type;
-	    baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, success = _arg.success, error = _arg.error;
+	    baseUrl = arg.baseUrl, http = arg.http, type = arg.type, success = arg.success, error = arg.error;
 	    return http({
 	      method: 'GET',
 	      url: baseUrl + "/Profile/" + type,
@@ -271,9 +271,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var document;
 
 	document = (function(_this) {
-	  return function(_arg) {
+	  return function(arg) {
 	    var baseUrl, bundle, error, http, success;
-	    baseUrl = _arg.baseUrl, http = _arg.http, bundle = _arg.bundle, success = _arg.success, error = _arg.error;
+	    baseUrl = arg.baseUrl, http = arg.http, bundle = arg.bundle, success = arg.success, error = arg.error;
 	    return http({
 	      method: 'POST',
 	      url: baseUrl + '/Document',
@@ -294,9 +294,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	var transaction;
 
 	transaction = (function(_this) {
-	  return function(_arg) {
+	  return function(arg) {
 	    var baseUrl, bundle, error, http, success;
-	    baseUrl = _arg.baseUrl, http = _arg.http, bundle = _arg.bundle, success = _arg.success, error = _arg.error;
+	    baseUrl = arg.baseUrl, http = arg.http, bundle = arg.bundle, success = arg.success, error = arg.error;
 	    return http({
 	      method: 'POST',
 	      url: baseUrl,
@@ -316,9 +316,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var affixTags, affixTagsToResource, affixTagsToResourceVersion, buildTags, removeTags, removeTagsFromResource, removeTagsFromResourceVersion, tags, tagsAll, tagsResource, tagsResourceType, tagsResourceVersion;
 
-	tagsAll = function(_arg) {
+	tagsAll = function(arg) {
 	  var baseUrl, error, http, success;
-	  baseUrl = _arg.baseUrl, http = _arg.http, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/_tags",
@@ -327,9 +327,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	tagsResourceType = function(_arg) {
+	tagsResourceType = function(arg) {
 	  var baseUrl, error, http, success, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/" + type + "/_tags",
@@ -338,9 +338,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	tagsResource = function(_arg) {
+	tagsResource = function(arg) {
 	  var baseUrl, error, http, id, success, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, id = _arg.id, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, id = arg.id, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/" + type + "/" + id + "/_tags",
@@ -349,9 +349,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	tagsResourceVersion = function(_arg) {
+	tagsResourceVersion = function(arg) {
 	  var baseUrl, error, http, id, success, type, vid;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, id = _arg.id, vid = _arg.vid, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, id = arg.id, vid = arg.vid, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/" + type + "/" + id + "/_history/" + vid + "/_tags",
@@ -380,9 +380,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }).join(",");
 	};
 
-	affixTagsToResource = function(_arg) {
+	affixTagsToResource = function(arg) {
 	  var baseUrl, error, headers, http, id, success, tagHeader, tags, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, id = _arg.id, tags = _arg.tags, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, id = arg.id, tags = arg.tags, success = arg.success, error = arg.error;
 	  headers = {};
 	  tagHeader = buildTags(tags);
 	  if (tagHeader) {
@@ -399,9 +399,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	affixTagsToResourceVersion = function(_arg) {
+	affixTagsToResourceVersion = function(arg) {
 	  var baseUrl, error, headers, http, id, success, tagHeader, tags, type, vid;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, id = _arg.id, vid = _arg.vid, tags = _arg.tags, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, id = arg.id, vid = arg.vid, tags = arg.tags, success = arg.success, error = arg.error;
 	  headers = {};
 	  tagHeader = buildTags(tags);
 	  if (tagHeader) {
@@ -428,9 +428,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	removeTagsFromResource = function(_arg) {
+	removeTagsFromResource = function(arg) {
 	  var baseUrl, error, http, id, success, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, id = _arg.id, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, id = arg.id, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'POST',
 	    url: baseUrl + "/" + type + "/" + id + "/_tags/_delete",
@@ -439,9 +439,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	removeTagsFromResourceVersion = function(_arg) {
+	removeTagsFromResourceVersion = function(arg) {
 	  var baseUrl, error, http, id, success, type, vid;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, id = _arg.id, vid = _arg.vid, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, id = arg.id, vid = arg.vid, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'POST',
 	    url: baseUrl + "/" + type + "/" + id + "/_history/" + vid + "/_tags",
@@ -485,9 +485,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return prm;
 	};
 
-	history = function(_arg) {
+	history = function(arg) {
 	  var baseUrl, count, error, http, id, since, success, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, id = _arg.id, success = _arg.success, error = _arg.error, count = _arg.count, since = _arg.since;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, id = arg.id, success = arg.success, error = arg.error, count = arg.count, since = arg.since;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/" + type + "/" + id + "/_history",
@@ -497,9 +497,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	historyType = function(_arg) {
+	historyType = function(arg) {
 	  var baseUrl, count, error, http, since, success, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, type = _arg.type, success = _arg.success, error = _arg.error, count = _arg.count, since = _arg.since;
+	  baseUrl = arg.baseUrl, http = arg.http, type = arg.type, success = arg.success, error = arg.error, count = arg.count, since = arg.since;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/" + type + "/_history",
@@ -509,9 +509,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	historyAll = function(_arg) {
+	historyAll = function(arg) {
 	  var baseUrl, count, error, http, since, success;
-	  baseUrl = _arg.baseUrl, http = _arg.http, success = _arg.success, error = _arg.error, count = _arg.count, since = _arg.since;
+	  baseUrl = arg.baseUrl, http = arg.http, success = arg.success, error = arg.error, count = arg.count, since = arg.since;
 	  return http({
 	    method: 'GET',
 	    url: baseUrl + "/_history",
@@ -556,9 +556,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	exports.create = function(_arg) {
+	exports.create = function(arg) {
 	  var baseUrl, error, http, resource, success, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, resource = _arg.resource, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, resource = arg.resource, success = arg.success, error = arg.error;
 	  type = resource.resourceType;
 	  assert(type, 'resourceType should be present');
 	  return http({
@@ -574,9 +574,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	exports.validate = function(_arg) {
+	exports.validate = function(arg) {
 	  var baseUrl, error, http, resource, success, type;
-	  baseUrl = _arg.baseUrl, http = _arg.http, resource = _arg.resource, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, resource = arg.resource, success = arg.success, error = arg.error;
 	  type = resource.resourceType;
 	  assert(resource.resourceType, 'resourceType should be present');
 	  return http({
@@ -590,9 +590,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	exports.read = function(_arg) {
+	exports.read = function(arg) {
 	  var baseUrl, error, http, id, resourceType, success;
-	  baseUrl = _arg.baseUrl, http = _arg.http, resourceType = _arg.resourceType, id = _arg.id, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, resourceType = arg.resourceType, id = arg.id, success = arg.success, error = arg.error;
 	  return http({
 	    method: 'GET',
 	    url: utils.absoluteUrl(baseUrl, resourceType + "/" + id),
@@ -603,9 +603,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	exports.update = function(_arg) {
+	exports.update = function(arg) {
 	  var baseUrl, error, http, resource, success, url;
-	  baseUrl = _arg.baseUrl, http = _arg.http, resource = _arg.resource, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, resource = arg.resource, success = arg.success, error = arg.error;
 	  url = utils.absoluteUrl(baseUrl, resource.resourceType + "/" + resource.id);
 	  return http({
 	    method: 'PUT',
@@ -620,9 +620,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	exports["delete"] = function(_arg) {
+	exports["delete"] = function(arg) {
 	  var baseUrl, error, http, resource, success, url;
-	  baseUrl = _arg.baseUrl, http = _arg.http, resource = _arg.resource, success = _arg.success, error = _arg.error;
+	  baseUrl = arg.baseUrl, http = arg.http, resource = arg.resource, success = arg.success, error = arg.error;
 	  url = utils.absoluteUrl(baseUrl, resource.resourceType + "/" + resource.id);
 	  return http({
 	    method: 'DELETE',
@@ -634,9 +634,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  });
 	};
 
-	exports.vread = function(_arg) {
+	exports.vread = function(arg) {
 	  var baseUrl, http;
-	  baseUrl = _arg.baseUrl, http = _arg.http;
+	  baseUrl = arg.baseUrl, http = arg.http;
 	  return console.log('TODO');
 	};
 
@@ -666,7 +666,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	var RTRIM, absoluteUrl, addKey, argsArray, assertArray, assertObject, identity, merge, mergeLists, postwalk, reduceMap, relativeUrl, trim, type, walk,
-	  __slice = [].slice;
+	  slice = [].slice;
 
 	merge = __webpack_require__(15);
 
@@ -738,13 +738,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	  acc || (acc = []);
 	  assertObject(m);
 	  return ((function() {
-	    var _results;
-	    _results = [];
+	    var results;
+	    results = [];
 	    for (k in m) {
 	      v = m[k];
-	      _results.push([k, v]);
+	      results.push([k, v]);
 	    }
-	    return _results;
+	    return results;
 	  })()).reduce(fn, acc);
 	};
 
@@ -758,7 +758,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	argsArray = function() {
 	  var args;
-	  args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+	  args = 1 <= arguments.length ? slice.call(arguments, 0) : [];
 	  return args;
 	};
 
@@ -820,9 +820,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return inner(item, [data, context]);
 	      }), context);
 	    case 'object':
-	      keysToMap = function(acc, _arg) {
+	      keysToMap = function(acc, arg) {
 	        var k, v;
-	        k = _arg[0], v = _arg[1];
+	        k = arg[0], v = arg[1];
 	        acc[k] = inner(v, [data].concat(context));
 	        return acc;
 	      };
@@ -862,16 +862,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  var cid, match, r, ret;
 	  cid = ref.match(CONTAINED)[1];
 	  match = (function() {
-	    var _i, _len, _ref, _results;
-	    _ref = resource != null ? resource.contained : void 0;
-	    _results = [];
-	    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	      r = _ref[_i];
+	    var i, len, ref1, results;
+	    ref1 = resource != null ? resource.contained : void 0;
+	    results = [];
+	    for (i = 0, len = ref1.length; i < len; i++) {
+	      r = ref1[i];
 	      if ((r.id || r._id) === cid) {
-	        _results.push(r);
+	        results.push(r);
 	      }
 	    }
-	    return _results;
+	    return results;
 	  })();
 	  ret = match[0] || null;
 	  if (ret) {
@@ -883,9 +883,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	};
 
-	sync = function(_arg) {
+	sync = function(arg) {
 	  var abs, baseUrl, bundle, bundled, cache, e, http, ref, reference, resource;
-	  baseUrl = _arg.baseUrl, http = _arg.http, cache = _arg.cache, reference = _arg.reference, resource = _arg.resource, bundle = _arg.bundle;
+	  baseUrl = arg.baseUrl, http = arg.http, cache = arg.cache, reference = arg.reference, resource = arg.resource, bundle = arg.bundle;
 	  ref = reference;
 	  if (!ref.reference) {
 	    return null;
@@ -895,16 +895,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 	  abs = utils.absoluteUrl(baseUrl, ref.reference);
 	  bundled = (function() {
-	    var _i, _len, _ref, _results;
-	    _ref = (bundle != null ? bundle.entry : void 0) || [];
-	    _results = [];
-	    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	      e = _ref[_i];
+	    var i, len, ref1, results;
+	    ref1 = (bundle != null ? bundle.entry : void 0) || [];
+	    results = [];
+	    for (i = 0, len = ref1.length; i < len; i++) {
+	      e = ref1[i];
 	      if (e.id === abs) {
-	        _results.push(e);
+	        results.push(e);
 	      }
 	    }
-	    return _results;
+	    return results;
 	  })();
 	  return bundled[0] || (cache != null ? cache[abs] : void 0) || null;
 	};
@@ -1086,9 +1086,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	expandParam = function(k, v) {
-	  return reduceMap(v, function(acc, _arg) {
+	  return reduceMap(v, function(acc, arg) {
 	    var kk, o, res, vv;
-	    kk = _arg[0], vv = _arg[1];
+	    kk = arg[0], vv = arg[1];
 	    return acc.concat(kk === '$and' ? assertArray(vv).reduce((function(a, vvv) {
 	      return a.concat(linearizeOne(k, vvv));
 	    }), []) : kk === '$type' ? [] : isOperator(kk) ? (o = {
@@ -1098,36 +1098,36 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	handleSort = function(xs) {
-	  var x, _i, _len, _results;
+	  var i, len, results, x;
 	  assertArray(xs);
-	  _results = [];
-	  for (_i = 0, _len = xs.length; _i < _len; _i++) {
-	    x = xs[_i];
+	  results = [];
+	  for (i = 0, len = xs.length; i < len; i++) {
+	    x = xs[i];
 	    switch (type(x)) {
 	      case 'array':
-	        _results.push({
+	        results.push({
 	          param: '_sort',
 	          value: x[0],
 	          modifier: ":" + x[1]
 	        });
 	        break;
 	      case 'string':
-	        _results.push({
+	        results.push({
 	          param: '_sort',
 	          value: x
 	        });
 	        break;
 	      default:
-	        _results.push(void 0);
+	        results.push(void 0);
 	    }
 	  }
-	  return _results;
+	  return results;
 	};
 
 	handleInclude = function(includes) {
-	  return reduceMap(includes, function(acc, _arg) {
+	  return reduceMap(includes, function(acc, arg) {
 	    var k, v;
-	    k = _arg[0], v = _arg[1];
+	    k = arg[0], v = arg[1];
 	    return acc.concat((function() {
 	      switch (type(v)) {
 	        case 'array':
@@ -1186,9 +1186,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	linearizeParams = function(query) {
-	  return reduceMap(query, function(acc, _arg) {
+	  return reduceMap(query, function(acc, arg) {
 	    var k, v;
-	    k = _arg[0], v = _arg[1];
+	    k = arg[0], v = arg[1];
 	    return acc.concat(linearizeOne(k, v));
 	  });
 	};
@@ -1196,14 +1196,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	buildSearchParams = function(query) {
 	  var p, ps;
 	  ps = (function() {
-	    var _i, _len, _ref, _results;
-	    _ref = linearizeParams(query);
-	    _results = [];
-	    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-	      p = _ref[_i];
-	      _results.push([p.param, p.modifier, '=', p.operator, encodeURIComponent(p.value)].filter(identity).join(''));
+	    var i, len, ref, results;
+	    ref = linearizeParams(query);
+	    results = [];
+	    for (i = 0, len = ref.length; i < len; i++) {
+	      p = ref[i];
+	      results.push([p.param, p.modifier, '=', p.operator, encodeURIComponent(p.value)].filter(identity).join(''));
 	    }
-	    return _results;
+	    return results;
 	  })();
 	  return ps.join("&");
 	};
