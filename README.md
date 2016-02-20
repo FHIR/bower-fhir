@@ -76,20 +76,28 @@ Structure of requestObj:
 * `method` - http method (GET|POST|PUT|DELETE)
 * `url` - url for request
 * `headers` - object with headers (i.e. {'Category': 'term; scheme="sch"; label="lbl"'}
-* `success` - success callback, which should be called with (data, status, headersFn, config)
+
+and return promise (A+)
+
+http(requestObj).then(success, error)
+
+where:
+`success` - success callback, which should be called with (data, status, headersFn, config)
+
   * data - parsed body of responce
   * status - responce HTTP status
   * headerFn - function to get header, i.e. headerFn('Content')
   * config - initial requestObj passed to http
-* `error` - error callback, which should be called with (data, status, headerFn, config)
+
+`error` - error callback, which should be called with (data, status, headerFn, config)
 
 
 Here are implementations for:
 
-* [AngularJS adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/angularjs.coffee)
-* [jQuery adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/jquery.coffee)
-* [Node adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/node.coffee)
-* [YUI adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/yui.coffee)
+* [AngularJS adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/angularjs.js)
+* [jQuery adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/jquery.js)
+* [Node adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/node.js)
+* [YUI adapter](https://github.com/FHIR/fhir.js/blob/master/src/adapters/yui.js)
 
 ### Conformance & Profiles
 
@@ -258,6 +266,49 @@ var fhir = jqFhir({
 
 fhir.search(type: 'Patient', query: {name: 'maud'}, success: function(bundle) {}, error: function() {})
 ```
+
+
+## For Developers
+
+FHIR.js is built on top of **middleware** concept.
+What is middleware?
+This is a high order function of shape:
+
+```js
+var mw  = function(next){
+   return function(args){
+     if (...) // some logic{
+        return next(args); //next mw in chain
+     } else {
+        return promise; //short circuit chain
+     }
+  }
+}
+```
+
+Using function Middleware(mw) you can get composable middle-ware (with .and(mw) method):
+
+```
+mwComposition = Middleware(mw).and(anotherMw).and(anotherMw);
+```
+
+Every API function is built as chain of middlewares with end handler in the end:
+
+```js
+conformance = $GET.and(BaseUrl.slash("metadata")).end(http)
+create =  $POST.and($resourceTypePath).and($ReturnHeader).and($JsonData).end(http),
+```
+
+## Release Notes
+
+### release 0.1
+
+API changes history is split into 3 fns:
+
+* fhir.history
+* fhir.typeHistory
+* fhir.resourceHistory
+
 ## TODO
 
 * npm package
@@ -266,3 +317,24 @@ fhir.search(type: 'Patient', query: {name: 'maud'}, success: function(bundle) {}
 ## Contribute
 
 Join us by [github issues](https://github.com/FHIR/fhir.js/issues) or pull-requests
+
+## License
+
+Released under the MIT license.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
