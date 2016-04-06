@@ -89,6 +89,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var pt = __webpack_require__(13);
 	    var refs = __webpack_require__(14);
 	    var url = __webpack_require__(15);
+	    var decorate = __webpack_require__(16);
 
 	    var cache = {};
 
@@ -130,7 +131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	        var $Paging = Middleware(query.$Paging);
 
-	        return {
+	        return decorate({
 	            conformance: GET.and(BaseUrl.slash("metadata")).end(http),
 	            document: POST.and(BaseUrl.slash("Document")).end(http),
 	            profile:  GET.and(BaseUrl.slash("Profile").slash(":type")).end(http),
@@ -138,17 +139,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            history: GET.and(BaseUrl.slash("_history")).and($Paging).end(http),
 	            typeHistory: GET.and(resourceTypeHxPath).and($Paging).end(http),
 	            resourceHistory: GET.and(resourceHxPath).and($Paging).end(http),
-	            read: GET.and(resourcePath).end(http),
+	            read: GET.and(pt.$WithPatient).and(resourcePath).end(http),
 	            vread: GET.and(vreadPath).end(http),
 	            "delete": DELETE.and(resourcePath).and(ReturnHeader).end(http),
 	            create: POST.and(resourceTypePath).and(ReturnHeader).end(http),
 	            validate: POST.and(resourceTypePath.slash("_validate")).end(http),
-	            search: GET.and(searchPath).and(pt.$WithPatient).and(query.$SearchParams).and($Paging).end(http),
+	            search: GET.and(resourceTypePath).and(pt.$WithPatient).and(query.$SearchParams).and($Paging).end(http),
 	            update: PUT.and(resourcePath).and(ReturnHeader).end(http),
 	            nextPage: GET.and(bundle.$$BundleLinkUrl("next")).end(http),
 	            prevPage: GET.and(bundle.$$BundleLinkUrl("prev")).end(http),
 	            resolve: GET.and(refs.resolve).end(http)
-	        };
+	        }, adapter);
 
 	    };
 	    module.exports = fhir;
@@ -265,7 +266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  exports.mergeLists = mergeLists;
 
 	  var absoluteUrl = function(baseUrl, ref) {
-	    if (ref.slice(ref, baseUrl.length + 1) !== baseUrl + "/") {
+	    if (!ref.match(/https?:\/\/./)) {
 	      return baseUrl + "/" + ref;
 	    } else {
 	      return ref;
@@ -909,6 +910,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var res =  args.bundle && (args.bundle.link || []).filter(matched)[0];
 	            if(res && res.url){
 	                args.url = res.url;
+	                args.data = null;
 	                return h(args);
 	            }
 	            else{
@@ -926,20 +928,69 @@ return /******/ (function(modules) { // webpackBootstrap
 	(function() {
 	    var mw = __webpack_require__(5);
 
-	    var keyFor = {
-	        "Observation": "subject",
-	        "MedicationPrescription": "patient"
-	    };
+	    // List of resources with 'patient' or 'subject' properties (as of FHIR DSTU2 1.0.0)
+	    var targets = [
+	        "Account",
+	        "AllergyIntolerance",
+	        "BodySite",
+	        "CarePlan",
+	        "Claim",
+	        "ClinicalImpression",
+	        "Communication",
+	        "CommunicationRequest",
+	        "Composition",
+	        "Condition",
+	        "Contract",
+	        "DetectedIssue",
+	        "Device",
+	        "DeviceUseRequest",
+	        "DeviceUseStatement",
+	        "DiagnosticOrder",
+	        "DiagnosticReport",
+	        "DocumentManifest",
+	        "DocumentReference",
+	        "Encounter",
+	        "EnrollmentRequest",
+	        "EpisodeOfCare",
+	        "FamilyMemberHistory",
+	        "Flag",
+	        "Goal",
+	        "ImagingObjectSelection",
+	        "ImagingStudy",
+	        "Immunization",
+	        "ImmunizationRecommendation",
+	        "List",
+	        "Media",
+	        "MedicationAdministration",
+	        "MedicationDispense",
+	        "MedicationOrder",
+	        "MedicationStatement",
+	        "NutritionOrder",
+	        "Observation",
+	        "Order",
+	        "Procedure",
+	        "ProcedureRequest",
+	        "QuestionnaireResponse",
+	        "ReferralRequest",
+	        "RelatedPerson",
+	        "RiskAssessment",
+	        "Specimen",
+	        "SupplyDelivery",
+	        "SupplyRequest",
+	        "VisionPrescription"
+	    ];
 
 	    exports.$WithPatient = mw.$$Simple(function(args){
-	        var type  = args.type;
-	        var param = keyFor[type];
-	        if (args.patient && param){
-	            args.query = args.query || {};
-	            args.query[param] = {
-	                $type: "Patient",
-	                _id: args.patient
-	            };
+	        var type = args.type;
+	        if (args.patient) {
+	            if (type === "Patient") {
+	                args.query = args.query || {};
+	                args.query["_id"] = args.patient;
+	                args["id"] = args.patient;
+	            } else if (targets.indexOf(type) >= 0){
+	                args.query = args.query || {};
+	                args.query["patient"] = args.patient;
+	            }
 	        }
 	        return args;
 	    });
@@ -993,6 +1044,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                throw new Error("Contained resource not found");
 	            }
 	            args.url = utils.absoluteUrl(args.baseUrl, ref.reference);
+	            args.data = null;
 	            return h(args);
 	        };
 	    };
@@ -1063,6 +1115,134 @@ return /******/ (function(modules) { // webpackBootstrap
 	    exports.Path = Path;
 	}).call(this);
 
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	(function() {
+	    var fhirAPI;
+	    var adapter;
+
+	    function getNext (bundle, process) {
+	        var i;
+	        var d = bundle.data.entry || [];
+	        var entries = [];
+	        for (i = 0; i < d.length; i++) {
+	            entries.push(d[i].resource);
+	        }
+	        process(entries);
+	        var def = adapter.defer();
+	        fhirAPI.nextPage({bundle:bundle.data}).then(function (r) {
+	            getNext(r, process).then(function (t) {
+	                def.resolve();
+	            });
+	        }, function(err) {def.resolve()});
+	        return def.promise;
+	    }
+	    
+	    function drain (searchParams, process, done, fail) {
+	        var ret = adapter.defer();
+	        
+	        fhirAPI.search(searchParams).then(function(data){
+	            getNext(data, process).then(function() {
+	                done();
+	            }, function(err) {
+	                fail(err);
+	            });
+	        }, function(err) {
+	            fail(err);
+	        });
+	    };
+	    
+	    function fetchAll (searchParams){
+	        var ret = adapter.defer();
+	        var results = [];
+	        
+	        drain(
+	            searchParams,
+	            function(entries) {
+	                entries.forEach(function(entry) {
+	                    results.push(entry);
+	                });
+	            },
+	            function () {
+	                ret.resolve(results);
+	            },
+	            function (err) {
+	                ret.reject(err);
+	            }
+	        );
+	          
+	        return ret.promise;
+	    };
+
+	    function fetchAllWithReferences (searchParams, resolveParams) {
+	        var ret = adapter.defer();
+	          
+	        fhirAPI.search(searchParams)  // TODO: THIS IS NOT CORRECT (need fetchAll, but it does not return a bundle yet)
+	            .then(function(results){
+
+	                var resolvedReferences = {};
+
+	                var queue = [function() {ret.resolve(results, resolvedReferences);}];
+	                
+	                function enqueue (bundle,resource,reference) {
+	                  queue.push(function() {resolveReference(bundle,resource,reference)});
+	                }
+
+	                function next() {
+	                  (queue.pop())();
+	                }
+
+	                function resolveReference (bundle,resource,reference) {
+	                    var referenceID = reference.reference;
+	                    fhirAPI.resolve({'bundle': bundle, 'resource': resource, 'reference':reference}).then(function(res){
+	                      var referencedObject = res.data || res.content;
+	                      resolvedReferences[referenceID] = referencedObject;
+	                      next();
+	                    });
+	                }
+
+	                var bundle = results.data;
+
+	                bundle.entry && bundle.entry.forEach(function(element){
+	                  var resource = element.resource;
+	                  var type = resource.resourceType;
+	                  resolveParams && resolveParams.forEach(function(resolveParam){
+	                    var param = resolveParam.split('.');
+	                    var targetType = param[0];
+	                    var targetElement = param[1];
+	                    var reference = resource[targetElement];
+	                    if (type === targetType && reference) {
+	                      var referenceID = reference.reference;
+	                      if (!resolvedReferences[referenceID]) {
+	                        enqueue(bundle,resource,reference);
+	                      }
+	                    }
+	                  });
+	                });
+
+	                next();
+
+	            }, function(){
+	                ret.reject("Could not fetch search results");
+	            });
+	          
+	        return ret.promise;
+	    };
+	    
+	    function decorate (client, newAdapter) {
+	        fhirAPI = client;
+	        adapter = newAdapter;
+	        client["drain"] = drain;
+	        client["fetchAll"] = fetchAll;
+	        client["fetchAllWithReferences"] = fetchAllWithReferences;
+	        return client;
+	    }
+	    
+	    module.exports = decorate;
+	}).call(this);
 
 /***/ }
 /******/ ])
