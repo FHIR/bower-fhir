@@ -73,7 +73,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                headers: args.headers,
 	                dataType: "json",
 	                contentType: "application/json",
-	                data: args.data || args.params
+	                data: args.data || args.params,
+	                withCredentials: args.credentials === 'include',
 	            };
 	            jquery.ajax(opts)
 	                .done(function(data, status, xhr) {ret.resolve({data: data, status: status, headers: xhr.getResponseHeader, config: args});})
@@ -124,6 +125,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                .and($Errors)
 	                .and(auth.$Basic)
 	                .and(auth.$Bearer)
+	                .and(auth.$Credentials)
 	                .and(transport.$JsonData)
 	                .and($$Header('Accept', 'application/json'))
 	                .and($$Header('Content-Type', 'application/json'));
@@ -753,6 +755,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return "Bearer " + args.auth.bearer;
 	        }
 	    });
+
+	    var credentials;
+	    // this first middleware sets the credentials attribute to empty, so
+	    // adapters cannot use it directly, thus enforcing a valid value to be parsed in.
+	    exports.$Credentials = mw.Middleware(mw.$$Attr('credentials', function(args){
+	      // Assign value for later checking
+	      credentials = args.credentials
+
+	      // Needs to return non-null and not-undefined
+	      // in order for value to be (un)set
+	      return '';
+	    })).and(mw.$$Attr('credentials', function(args){
+	        // check credentials for valid options, valid for fetch
+	        if(['same-origin', 'include'].indexOf(credentials) > -1 ){
+	            return credentials;
+	        }
+	    }));
 
 	}).call(this);
 
