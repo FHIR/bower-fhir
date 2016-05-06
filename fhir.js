@@ -528,10 +528,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var identity = utils.identity;
 
 	    var OPERATORS = {
-	        $gt: '>',
-	        $lt: '<',
-	        $lte: '<=',
-	        $gte: '>='
+	        $gt: 'gt',
+	        $lt: 'lt',
+	        $lte: 'lte',
+	        $gte: 'gte'
 	    };
 
 	    var MODIFIERS = {
