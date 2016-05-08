@@ -892,6 +892,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                copyAttr(cfg, args, 'auth');
 	                copyAttr(cfg, args, 'patient');
 	                copyAttr(cfg, args, 'debug');
+	                copyAttr(cfg, args, 'credentials');
 	                copyAttr(adapter, args, 'defer');
 	                copyAttr(adapter, args, 'http');
 	                return h(args);
