@@ -1,6 +1,6 @@
 {
   "name": "fhir.js",
-  "version": "v0.0.14",
+  "version": "v0.0.15",
   "authors": [
     "Maksym Bodnarchuk <bodnarchuk@gmail.com>",
     "Nikolay Ryzhikov <niquola@gmail.com>",

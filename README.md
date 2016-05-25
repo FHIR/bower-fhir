@@ -34,13 +34,10 @@ npm install
 # buld fhir.js
 npm run-script build
 
-# run all tests once
-npm run-script spec
+# run tests in node
+npm run-script test
 
-# watch tests while development
-npm run-script spec-watch
-
-# run integration tests
+# run tests in phantomjs
 npm run-script integrate
 ```
 
@@ -202,16 +199,10 @@ myClient.create(entry,
 
 ```
 
-### Tags Operations
-
 ### Search
 
-`fhir.search('Patient', queryObject, callback, errback)` function is used
-for [FHIR resource's search](http://www.hl7.org/implement/standards/fhir/search.html).
-
-If success callback will be called with resulting [bundle](http://www.hl7.org/implement/standards/fhir/json.html#bundle).
-
-For queryObject syntax `fhir.js` adopts
+fhir.search({type: resourceType, query: queryObject}),
+where queryObject syntax `fhir.js` adopts
 mongodb-like query syntax ([see](http://docs.mongodb.org/manual/tutorial/query-documents/)):
 
 ```javascript
@@ -287,7 +278,7 @@ fhir.search({type: 'Patient', query: {name: 'maud'}})
 })
 ```
 
-## Node.js adapter: `npm install fhir.ns`
+## Node.js adapter: `npm install fhir.js`
 
 Via NPM you can `npm install fhir.js`. (If you want to work on the source code,
 you can compile coffee to js via `npm install`, and use `./lib/adapters/node`
@@ -297,13 +288,27 @@ as an entrypoint.)
 var mkFhir = require('fhir.js');
 
 var client = mkFhir({
-  baseUrl: 'http://try-fhirplace.hospital-systems.com'
+    baseUrl: 'http://try-fhirplace.hospital-systems.com'
 });
 
-client.search( {type: 'Patient', query: { 'birthdate': '1974' }}, function(err, bundle) {
-  var count = (bundle.entry && bundle.entry.length) || 0;
-  console.log("# Patients born in 1974: ", count);
-});
+client
+    .search( {type: 'Patient', query: { 'birthdate': '1974' }})
+    .then(function(res){
+        var bundle = res.data;
+        var count = (bundle.entry && bundle.entry.length) || 0;
+        console.log("# Patients born in 1974: ", count);
+    })
+    .catch(function(res){
+        //Error responses
+        if (res.status){
+            console.log('Error', res.status);
+        }
+
+        //Errors
+        if (res.message){
+            console.log('Error', res.message);
+        }
+    });
 
 ```
 
