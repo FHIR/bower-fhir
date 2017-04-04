@@ -127,8 +127,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                .and(auth.$Bearer)
 	                .and(auth.$Credentials)
 	                .and(transport.$JsonData)
-	                .and($$Header('Accept', 'application/json'))
-	                .and($$Header('Content-Type', 'application/json'));
+	                .and($$Header('Accept', (cfg.headers && cfg.headers['Accept']) ? cfg.headers['Accept'] : 'application/json'))
+	                .and($$Header('Content-Type', (cfg.headers && cfg.headers['Content-Type']) ? cfg.headers['Content-Type'] : 'application/json'));
 
 	        var GET = Defaults.and($$Method('GET'));
 	        var POST = Defaults.and($$Method('POST'));
@@ -1023,6 +1023,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                copyAttr(cfg, args, 'debug');
 	                copyAttr(cfg, args, 'credentials');
 	                copyAttr(cfg, args, 'headers');
+	                copyAttr(cfg, args, 'agentOptions');
 	                copyAttr(adapter, args, 'defer');
 	                copyAttr(adapter, args, 'http');
 	                return h(args);

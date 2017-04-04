@@ -165,10 +165,10 @@ Here are implementations for:
 
 To create a FHIR resource, call
 `myClient.create(entry, callback, errback)`, passing
-an object that contains the following propperties:
+an object that contains the following properties:
 
-* `content` (required) - resource in FHIR json
-* `tags` (opttional) - list of categories (see below)
+* `resource` (required) - resource in FHIR json
+* `tags` (optional) - list of categories (see below)
 
 In case of success,the  callback function will be
 invoked with an object that contains the following
@@ -182,7 +182,7 @@ attributes:
 
 var entry = {
   category: [{term: 'TAG term', schema: 'TAG schema', label: 'TAG label'}, ...]
-  content: {
+  resource: {
     resourceType: 'Patient',
     //...
   }
@@ -238,16 +238,31 @@ AngularJS adapter after `npm run-script build` can be found at `dist/ngFhir.js`
 
 Usage:
 
-```coffeescript
+```javascript
 angular.module('app', ['ng-fhir'])
-  .config ($fhirProvider)->
-     $fhirProvider.baseUrl = 'http://try-fhirplace.hospital-systems.com'
-  .controller 'mainCtrl', ($scope, $fhir)->
-     $fhir.search
-       type: 'Patient'
-       query: {name: {$exact: 'Maud'}}
-       error: (error)-> $scope.error = error
-       success: (bundle)-> $scope.patients = bundle.entry
+  .config(['$fhirProvider', function ($fhirProvider) {
+    $fhirProvider.baseUrl = 'http://try-fhirplace.hospital-systems.com';
+    $fhirProvider.auth = {
+      user: 'user',
+      pass: 'secret'
+    };
+    $fhirProvider.credentials = 'same-origin'
+  }])
+  .controller('mainCtrl', ['$scope', '$fhir', function ($scope, $fhir) {
+    $fhir.search(
+      {
+        type: 'Patient',
+        query: {name: 'emerald'}
+      }).then(
+      function (successData) {
+        $scope.patients = successData.data.entry;
+
+      },
+      function (failData) {
+        $scope.error = failData;
+      }
+    );
+  }]);  
 ```
 
 ## jQuery adapter: `jqFhir`
