@@ -52,14 +52,14 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1);
 
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var utils = __webpack_require__(2);
@@ -99,6 +99,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var POST = Defaults.and($$Method('POST'));
 	        var PUT = Defaults.and($$Method('PUT'));
 	        var DELETE = Defaults.and($$Method('DELETE'));
+	        var PATCH = Defaults.and($$Method('PATCH'));
 
 	        var http = transport.Http(cfg, adapter);
 
@@ -133,17 +134,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            update: PUT.and(resourcePath).and(ReturnHeader).end(http),
 	            nextPage: GET.and(bundle.$$BundleLinkUrl("next")).end(http),
 	            prevPage: GET.and(bundle.$$BundleLinkUrl("prev")).end(http),
-	            resolve: GET.and(refs.resolve).end(http)
+	            resolve: GET.and(refs.resolve).end(http),
+	            patch: PATCH.and(resourcePath).and($$Header('Content-Type', 'application/json-patch+json')).end(http)
 	        }, adapter);
-
 	    };
 	    module.exports = fhir;
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	  var merge = __webpack_require__(3);
@@ -320,9 +321,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {/*!
 	 * @name JavaScript/NodeJS Merge v1.2.0
@@ -501,9 +502,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	})(typeof module === 'object' && module && typeof module.exports === 'object' && module.exports);
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)(module)))
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = function(module) {
 		if(!module.webpackPolyfill) {
@@ -517,9 +518,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var utils = __webpack_require__(2);
@@ -604,9 +605,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var utils = __webpack_require__(2);
@@ -794,9 +795,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var mw = __webpack_require__(5);
@@ -835,9 +836,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 8 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	;(function () {
 
@@ -902,9 +903,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 
 
-/***/ },
+/***/ }),
 /* 9 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var utils = __webpack_require__(2);
@@ -923,7 +924,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    var toJson = function(x){
-	        return (utils.type(x) == 'object') ? JSON.stringify(x) : x;
+	        return (utils.type(x) == 'object' || utils.type(x) == 'array') ? JSON.stringify(x) : x;
 	    };
 
 	    exports.$JsonData = function(h){
@@ -939,9 +940,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 10 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = function(h){
 	    return function(args){
@@ -967,9 +968,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 11 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	(function() {
 	    var copyAttr = function(from, to, attr){
@@ -998,9 +999,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 12 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	exports.$$BundleLinkUrl =  function(rel){
 	    return function(h) {
@@ -1020,9 +1021,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 
-/***/ },
+/***/ }),
 /* 13 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var mw = __webpack_require__(5);
@@ -1096,9 +1097,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 14 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var utils = __webpack_require__(2);
@@ -1154,9 +1155,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 15 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	(function() {
 	    var utils = __webpack_require__(2);
@@ -1215,9 +1216,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}).call(this);
 
 
-/***/ },
+/***/ }),
 /* 16 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	(function() {
 	    var fhirAPI;
@@ -1343,7 +1344,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    module.exports = decorate;
 	}).call(this);
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
